@@ -13,22 +13,36 @@ builder.Services.AddControllersWithViews()
         options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
     });
 
+// Render par: Environment → ConnectionStrings__DefaultConnection set karo
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
 if (string.IsNullOrWhiteSpace(connectionString))
 {
-    throw new InvalidOperationException(
-        "Database connection string is missing. Set ConnectionStrings__DefaultConnection environment variable.");
+    Console.WriteLine(
+        "WARNING: ConnectionStrings__DefaultConnection is not set. " +
+        "App will start but signup will not save until you add it in Render Environment.");
 }
-
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+else
+{
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlServer(connectionString));
+}
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
+if (!string.IsNullOrWhiteSpace(connectionString))
 {
-    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    db.Database.Migrate();
+    try
+    {
+        using var scope = app.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        db.Database.Migrate();
+        Console.WriteLine("Database migration completed.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Database migration failed: {ex.Message}");
+    }
 }
 
 if (!app.Environment.IsDevelopment())

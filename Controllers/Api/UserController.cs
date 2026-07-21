@@ -9,10 +9,10 @@ namespace SignupApp.Controllers;
 [Route("api/[controller]")]
 public class UserController : ControllerBase
 {
-    private readonly ApplicationDbContext _context;
+    private readonly ApplicationDbContext? _context;
     private readonly ILogger<UserController> _logger;
 
-    public UserController(ApplicationDbContext context, ILogger<UserController> logger)
+    public UserController(ILogger<UserController> logger, ApplicationDbContext? context = null)
     {
         _context = context;
         _logger = logger;
@@ -21,12 +21,38 @@ public class UserController : ControllerBase
     [HttpGet]
     public IActionResult Get()
     {
-        return Ok(new { message = "API Working", database = _context.Database.CanConnect() });
+        if (_context is null)
+        {
+            return Ok(new
+            {
+                message = "API Working",
+                database = false,
+                hint = "Set ConnectionStrings__DefaultConnection in Render Environment"
+            });
+        }
+
+        try
+        {
+            return Ok(new { message = "API Working", database = _context.Database.CanConnect() });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Database connection check failed");
+            return Ok(new { message = "API Working", database = false });
+        }
     }
 
     [HttpPost]
     public async Task<IActionResult> Register([FromBody] SignupRequest request)
     {
+        if (_context is null)
+        {
+            return StatusCode(503, new
+            {
+                message = "Database is not configured. Add ConnectionStrings__DefaultConnection on Render."
+            });
+        }
+
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
@@ -37,6 +63,14 @@ public class UserController : ControllerBase
 
         try
         {
+            if (!await _context.Database.CanConnectAsync())
+            {
+                return StatusCode(503, new
+                {
+                    message = "Cannot connect to SQL Server. Check your connection string on Render."
+                });
+            }
+
             var user = request.ToEntity();
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
@@ -47,6 +81,11 @@ public class UserController : ControllerBase
         {
             _logger.LogError(ex, "Failed to save signup data");
             return StatusCode(500, new { message = "Could not save user. Check database connection and try again." });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error during signup");
+            return StatusCode(500, new { message = "Server error. Please try again later." });
         }
     }
 }
