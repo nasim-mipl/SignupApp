@@ -28,7 +28,7 @@ public class UserController : ControllerBase
             {
                 message = "API Working",
                 database = false,
-                hint = "Set ConnectionStrings__DefaultConnection in Render Environment"
+                hint = "Link Render PostgreSQL database or set DATABASE_URL"
             });
         }
 
@@ -50,7 +50,7 @@ public class UserController : ControllerBase
         {
             return StatusCode(503, new
             {
-                message = "Database is not configured. Add ConnectionStrings__DefaultConnection on Render."
+                message = "Database is not configured. Link Render PostgreSQL or set DATABASE_URL."
             });
         }
 
@@ -83,7 +83,7 @@ public class UserController : ControllerBase
             {
                 return StatusCode(503, new
                 {
-                    message = "Cannot connect to SQL Server. Check your connection string on Render."
+                    message = "Cannot connect to PostgreSQL. Check your database settings on Render."
                 });
             }
 

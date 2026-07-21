@@ -1,14 +1,15 @@
 services:
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: signupapp-sql
+  postgres:
+    image: postgres:16
+    container_name: signupapp-postgres
     environment:
-      ACCEPT_EULA: "Y"
-      MSSQL_SA_PASSWORD: "Nasim@12345"
+      POSTGRES_USER: signupuser
+      POSTGRES_PASSWORD: signuppass
+      POSTGRES_DB: SignupDB
     ports:
-      - "1433:1433"
+      - "5432:5432"
     volumes:
-      - sqldata:/var/opt/mssql
+      - pgdata:/var/lib/postgresql/data
 
 volumes:
-  sqldata:
+  pgdata:

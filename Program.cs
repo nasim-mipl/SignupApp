@@ -13,19 +13,18 @@ builder.Services.AddControllersWithViews()
         options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
     });
 
-// Render par: Environment → ConnectionStrings__DefaultConnection set karo
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = GetDatabaseConnectionString(builder.Configuration);
 
 if (string.IsNullOrWhiteSpace(connectionString))
 {
     Console.WriteLine(
-        "WARNING: ConnectionStrings__DefaultConnection is not set. " +
-        "App will start but signup will not save until you add it in Render Environment.");
+        "WARNING: Database connection string is not set. " +
+        "Link Render PostgreSQL or set ConnectionStrings__DefaultConnection / DATABASE_URL.");
 }
 else
 {
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseSqlServer(connectionString));
+        options.UseNpgsql(connectionString));
 }
 
 var app = builder.Build();
@@ -63,3 +62,19 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+static string? GetDatabaseConnectionString(IConfiguration configuration)
+{
+    var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+    if (string.IsNullOrWhiteSpace(connectionString))
+        connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
+
+    if (string.IsNullOrWhiteSpace(connectionString))
+        return null;
+
+    if (connectionString.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase))
+        connectionString = "postgresql://" + connectionString["postgres://".Length..];
+
+    return connectionString;
+}
