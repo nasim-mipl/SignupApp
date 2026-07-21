@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using SignupApp.Data;
 
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions
@@ -73,8 +74,22 @@ static string? GetDatabaseConnectionString(IConfiguration configuration)
     if (string.IsNullOrWhiteSpace(connectionString))
         return null;
 
-    if (connectionString.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase))
-        connectionString = "postgresql://" + connectionString["postgres://".Length..];
+    if (connectionString.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase) ||
+        connectionString.StartsWith("postgresql://", StringComparison.OrdinalIgnoreCase))
+    {
+        var databaseUri = new Uri(connectionString);
+        var userInfo = databaseUri.UserInfo.Split(':', 2);
+
+        return new NpgsqlConnectionStringBuilder
+        {
+            Host = databaseUri.Host,
+            Port = databaseUri.Port > 0 ? databaseUri.Port : 5432,
+            Database = databaseUri.LocalPath.TrimStart('/'),
+            Username = Uri.UnescapeDataString(userInfo[0]),
+            Password = userInfo.Length > 1 ? Uri.UnescapeDataString(userInfo[1]) : string.Empty,
+            SslMode = SslMode.Require
+        }.ConnectionString;
+    }
 
     return connectionString;
 }
