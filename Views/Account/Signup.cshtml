@@ -1,0 +1,268 @@
+@{
+    ViewData["Title"] = "Signup";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header text-center">
+                    <h3 class="mb-0">User Registration Form</h3>
+                </div>
+
+                <div class="card-body">
+                    <form class="signup-form" id="signupForm" enctype="multipart/form-data">
+                        <div class="row mb-3 align-items-center">
+                            <label class="col-sm-3 col-form-label text-start fw-semibold">
+                                Name <span class="text-danger">*</span> :
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="Name" class="form-control" placeholder="Enter employee name" maxlength="25" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3 align-items-center">
+                            <label class="col-sm-3 col-form-label text-start fw-semibold">
+                                Gender <span class="text-danger">*</span> :
+                            </label>
+                            <div class="col-sm-9">
+                                <div class="signup-option-group">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="Gender" id="male" value="Male" required>
+                                        <label class="form-check-label" for="male">Male</label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="Gender" id="female" value="Female">
+                                        <label class="form-check-label" for="female">Female</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3 align-items-center">
+                            <label class="col-sm-3 col-form-label text-start fw-semibold">
+                                Date of Birth <span class="text-danger">*</span> :
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="date" class="form-control" name="DateOfBirth" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3 align-items-center">
+                            <label class="col-sm-3 col-form-label text-start fw-semibold">
+                                Email Address :
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="email" name="Email" class="form-control" placeholder="Enter Email Address">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3 align-items-center">
+    <label class="col-sm-3 col-form-label text-start fw-semibold">
+        Contact No. <span class="text-danger">*</span> :
+    </label>
+    <div class="col-sm-9">
+        <div class="signup-contact-group">
+            <input type="text" id="Mobile" name="Mobile" class="form-control"
+                   placeholder="Mobile" maxlength="10">
+
+            <span class="mx-2 fw-bold">/</span>
+
+            <input type="text" id="Phone" name="Phone" class="form-control"
+                   placeholder="Phone" maxlength="10">
+        </div>
+
+        <span id="contactError" class="text-danger"></span>
+    </div>
+</div>
+
+                        <div class="row mb-3 align-items-center">
+                            <label class="col-sm-3 col-form-label text-start fw-semibold">
+                                State <span class="text-danger">*</span> :
+                            </label>
+                            <div class="col-sm-9">
+                                <select class="form-select" name="State" id="state" name="State" required>
+                                    <option value="">Select State</option>
+                                    <option value="Delhi">Delhi</option>
+                                    <option value="UP">UP</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3 align-items-center">
+                            <label class="col-sm-3 col-form-label text-start fw-semibold">
+                                City :
+                            </label>
+                            <div class="col-sm-9">
+                                <select class="form-select" name="City" id="city" name="City">
+                                    <option value="">Select City</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3 align-items-center">
+                            <label class="col-sm-3 col-form-label text-start fw-semibold">
+                                Hobbies :
+                            </label>
+                            <div class="col-sm-9">
+                                <div class="signup-option-group">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="Hobbies" id="chess" value="Chess">
+                                        <label class="form-check-label" for="chess">Chess</label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="Hobbies" id="cricket" value="Cricket">
+                                        <label class="form-check-label" for="cricket">Cricket</label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="Hobbies" id="football" value="Football">
+                                        <label class="form-check-label" for="football">Football</label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="Hobbies" id="hockey" value="Hockey">
+                                        <label class="form-check-label" for="hockey">Hockey</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3 align-items-center">
+                            <label class="col-sm-3 col-form-label text-start fw-semibold">
+                                Photo :
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="file" name="Photo" class="form-control" id="photo" name="Photo" accept="image/*">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-sm-9 offset-sm-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" name="AgreeTerms" value="true" type="checkbox" id="agreeTerms" required>
+                                    <label class="form-check-label" for="agreeTerms">
+                                        I agree to the <a href="#" target="_blank">Terms &amp; Conditions</a>
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const stateDropdown = document.getElementById("state");
+    const cityDropdown = document.getElementById("city");
+
+    const cities = {
+        Delhi: [
+            "New Delhi"
+        ],
+        UP: [
+            "Noida",
+            "Lucknow"
+        ]
+    };
+
+    stateDropdown.addEventListener("change", function () {
+
+        // Clear old cities
+        cityDropdown.innerHTML = '<option value="">Select City</option>';
+
+        const selectedState = this.value;
+
+        if (selectedState && cities[selectedState]) {
+
+            cities[selectedState].forEach(function (city) {
+
+                const option = document.createElement("option");
+                option.value = city;
+                option.textContent = city;
+
+                cityDropdown.appendChild(option);
+            });
+
+        }
+
+    });
+</script>
+
+<script>
+const form = document.getElementById("signupForm");
+
+form.addEventListener("submit", async function (e) {
+
+    e.preventDefault();
+
+    const mobile = document.getElementById("Mobile").value.trim();
+    const phone = document.getElementById("Phone").value.trim();
+    const error = document.getElementById("contactError");
+
+    if (mobile === "" && phone === "") {
+        error.textContent = "Please enter either Mobile or Phone number.";
+        return; // <-- API call yahin stop
+    }
+
+    error.textContent = "";
+
+    const data = {
+        name: document.querySelector("[name='Name']").value,
+        gender: document.querySelector("[name='Gender']:checked")?.value,
+        dateOfBirth: document.querySelector("[name='DateOfBirth']").value,
+        email: document.querySelector("[name='Email']").value,
+        mobile: mobile,
+        phone: phone,
+        state: document.querySelector("[name='State']").value,
+        city: document.querySelector("[name='City']").value,
+        hobbies: document.querySelector("[name='Hobbies']:checked")?.value
+    };
+
+    try {
+
+        const response = await fetch("/api/User", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            const toast = new bootstrap.Toast(document.getElementById("successToast"));
+            toast.show();
+            form.reset();
+            cityDropdown.innerHTML = '<option value="">Select City</option>';
+        } else {
+            alert("API Failed");
+        }
+
+    } catch (err) {
+        console.log(err);
+        alert("Server Error");
+    }
+
+});
+</script>
+
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+    <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert">
+        <div class="d-flex">
+            <div class="toast-body">
+                User Registered Successfully.
+            </div>
+            <button type="button"
+                    class="btn-close btn-close-white me-2 m-auto"
+                    data-bs-dismiss="toast">
+            </button>
+        </div>
+    </div>
+</div>
