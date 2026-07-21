@@ -214,16 +214,20 @@ form.addEventListener("submit", async function (e) {
 
     error.textContent = "";
 
+    const email = document.querySelector("[name='Email']").value.trim();
+    const city = document.querySelector("[name='City']").value;
+    const hobbies = document.querySelector("[name='Hobbies']:checked")?.value;
+
     const data = {
-        name: document.querySelector("[name='Name']").value,
+        name: document.querySelector("[name='Name']").value.trim(),
         gender: document.querySelector("[name='Gender']:checked")?.value,
         dateOfBirth: document.querySelector("[name='DateOfBirth']").value,
-        email: document.querySelector("[name='Email']").value,
         mobile: mobile,
-        phone: phone,
         state: document.querySelector("[name='State']").value,
-        city: document.querySelector("[name='City']").value,
-        hobbies: document.querySelector("[name='Hobbies']:checked")?.value
+        ...(email && { email }),
+        ...(phone && { phone }),
+        ...(city && { city }),
+        ...(hobbies && { hobbies })
     };
 
     try {
@@ -243,7 +247,13 @@ form.addEventListener("submit", async function (e) {
             cityDropdown.innerHTML = '<option value="">Select City</option>';
         } else {
             const err = await response.json().catch(() => null);
-            const msg = err?.message || err?.title || "Signup failed. Please check your details.";
+            let msg = err?.message || "Signup failed. Please check your details.";
+            if (err?.errors) {
+                const fieldErrors = Object.values(err.errors).flat();
+                if (fieldErrors.length > 0) {
+                    msg = fieldErrors.join("\n");
+                }
+            }
             alert(msg);
         }
 

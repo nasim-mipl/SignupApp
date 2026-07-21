@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SignupApp.Data;
@@ -53,8 +54,23 @@ public class UserController : ControllerBase
             });
         }
 
+        NormalizeOptionalFields(request);
+
+        if (!string.IsNullOrWhiteSpace(request.Email) &&
+            !new EmailAddressAttribute().IsValid(request.Email))
+        {
+            return BadRequest(new { message = "Enter a valid email address." });
+        }
+
         if (!ModelState.IsValid)
-            return BadRequest(ModelState);
+        {
+            var errors = ModelState
+                .Where(entry => entry.Value?.Errors.Count > 0)
+                .SelectMany(entry => entry.Value!.Errors.Select(error => error.ErrorMessage))
+                .ToList();
+
+            return BadRequest(new { message = string.Join(" ", errors), errors });
+        }
 
         if (string.IsNullOrWhiteSpace(request.Mobile) && string.IsNullOrWhiteSpace(request.Phone))
         {
@@ -87,5 +103,20 @@ public class UserController : ControllerBase
             _logger.LogError(ex, "Unexpected error during signup");
             return StatusCode(500, new { message = "Server error. Please try again later." });
         }
+    }
+
+    private static void NormalizeOptionalFields(SignupRequest request)
+    {
+        if (string.IsNullOrWhiteSpace(request.Email))
+            request.Email = null;
+
+        if (string.IsNullOrWhiteSpace(request.Phone))
+            request.Phone = null;
+
+        if (string.IsNullOrWhiteSpace(request.City))
+            request.City = null;
+
+        if (string.IsNullOrWhiteSpace(request.Hobbies))
+            request.Hobbies = null;
     }
 }

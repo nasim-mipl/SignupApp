@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SignupApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+89f576e6a4749b7730bfa79aea481083f8f4fd51")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2d75fe94be59b0df70c2b173c455fa0043589c52")]
 [assembly: System.Reflection.AssemblyProductAttribute("SignupApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SignupApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

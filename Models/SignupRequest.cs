@@ -14,7 +14,6 @@ public class SignupRequest
     [Required]
     public DateOnly DateOfBirth { get; set; }
 
-    [EmailAddress]
     public string? Email { get; set; }
 
     public string? Mobile { get; set; }
