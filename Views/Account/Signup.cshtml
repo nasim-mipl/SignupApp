@@ -242,7 +242,9 @@ form.addEventListener("submit", async function (e) {
             form.reset();
             cityDropdown.innerHTML = '<option value="">Select City</option>';
         } else {
-            alert("API Failed");
+            const err = await response.json().catch(() => null);
+            const msg = err?.message || err?.title || "Signup failed. Please check your details.";
+            alert(msg);
         }
 
     } catch (err) {
