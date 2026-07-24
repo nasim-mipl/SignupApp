@@ -11,13 +11,14 @@
                 </div>
 
                 <div class="card-body">
-                    <form class="signup-form" id="signupForm" enctype="multipart/form-data">
+                    <form class="signup-form" id="signupForm" enctype="multipart/form-data" novalidate>
                         <div class="row mb-3 align-items-center">
                             <label class="col-sm-3 col-form-label text-start fw-semibold">
                                 Name <span class="text-danger">*</span> :
                             </label>
                             <div class="col-sm-9">
-                                <input type="text" name="Name" class="form-control" placeholder="Enter employee name" maxlength="25" required>
+                                <input type="text" name="Name" id="Name" class="form-control" placeholder="Enter employee name" maxlength="25">
+                                <span class="field-error" id="NameError"></span>
                             </div>
                         </div>
 
@@ -26,9 +27,9 @@
                                 Gender <span class="text-danger">*</span> :
                             </label>
                             <div class="col-sm-9">
-                                <div class="signup-option-group">
+                                <div class="signup-option-group" id="GenderGroup">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="Gender" id="male" value="Male" required>
+                                        <input class="form-check-input" type="radio" name="Gender" id="male" value="Male">
                                         <label class="form-check-label" for="male">Male</label>
                                     </div>
 
@@ -37,6 +38,7 @@
                                         <label class="form-check-label" for="female">Female</label>
                                     </div>
                                 </div>
+                                <span class="field-error" id="GenderError"></span>
                             </div>
                         </div>
 
@@ -45,7 +47,8 @@
                                 Date of Birth <span class="text-danger">*</span> :
                             </label>
                             <div class="col-sm-9">
-                                <input type="date" class="form-control" name="DateOfBirth" required>
+                                <input type="date" class="form-control" name="DateOfBirth" id="DateOfBirth">
+                                <span class="field-error" id="DateOfBirthError"></span>
                             </div>
                         </div>
 
@@ -54,39 +57,40 @@
                                 Email Address :
                             </label>
                             <div class="col-sm-9">
-                                <input type="email" name="Email" class="form-control" placeholder="Enter Email Address">
+                                <input type="email" name="Email" id="Email" class="form-control" placeholder="Enter Email Address">
+                                <span class="field-error" id="EmailError"></span>
                             </div>
                         </div>
 
                         <div class="row mb-3 align-items-center">
-    <label class="col-sm-3 col-form-label text-start fw-semibold">
-        Contact No. <span class="text-danger">*</span> :
-    </label>
-    <div class="col-sm-9">
-        <div class="signup-contact-group">
-            <input type="text" id="Mobile" name="Mobile" class="form-control"
-                   placeholder="Mobile" maxlength="10">
+                            <label class="col-sm-3 col-form-label text-start fw-semibold">
+                                Contact No. <span class="text-danger">*</span> :
+                            </label>
+                            <div class="col-sm-9">
+                                <div class="signup-contact-group">
+                                    <input type="text" id="Mobile" name="Mobile" class="form-control"
+                                           placeholder="Mobile" maxlength="10">
 
-            <span class="mx-2 fw-bold">/</span>
+                                    <span class="mx-2 fw-bold">/</span>
 
-            <input type="text" id="Phone" name="Phone" class="form-control"
-                   placeholder="Phone" maxlength="10">
-        </div>
-
-        <span id="contactError" class="text-danger"></span>
-    </div>
-</div>
+                                    <input type="text" id="Phone" name="Phone" class="form-control"
+                                           placeholder="Phone" maxlength="10">
+                                </div>
+                                <span class="field-error" id="ContactError"></span>
+                            </div>
+                        </div>
 
                         <div class="row mb-3 align-items-center">
                             <label class="col-sm-3 col-form-label text-start fw-semibold">
                                 State <span class="text-danger">*</span> :
                             </label>
                             <div class="col-sm-9">
-                                <select class="form-select" name="State" id="state" name="State" required>
+                                <select class="form-select" name="State" id="state">
                                     <option value="">Select State</option>
                                     <option value="Delhi">Delhi</option>
                                     <option value="UP">UP</option>
                                 </select>
+                                <span class="field-error" id="StateError"></span>
                             </div>
                         </div>
 
@@ -95,7 +99,7 @@
                                 City :
                             </label>
                             <div class="col-sm-9">
-                                <select class="form-select" name="City" id="city" name="City">
+                                <select class="form-select" name="City" id="city">
                                     <option value="">Select City</option>
                                 </select>
                             </div>
@@ -135,19 +139,20 @@
                                 Photo :
                             </label>
                             <div class="col-sm-9">
-                                <input type="file" name="Photo" class="form-control" id="photo" name="Photo" accept="image/*">
+                                <input type="file" name="Photo" class="form-control" id="photo" accept="image/*">
                             </div>
                         </div>
 
                         <div class="row mb-3">
                             <div class="col-sm-9 offset-sm-3">
                                 <div class="form-check">
-                                    <input class="form-check-input" name="AgreeTerms" value="true" type="checkbox" id="agreeTerms" required>
+                                    <input class="form-check-input" name="AgreeTerms" value="true" type="checkbox" id="agreeTerms">
                                     <label class="form-check-label" for="agreeTerms">
                                         I agree to the <a href="#" target="_blank">Terms &amp; Conditions</a>
                                         <span class="text-danger">*</span>
                                     </label>
                                 </div>
+                                <span class="field-error" id="AgreeTermsError"></span>
                             </div>
                         </div>
 
@@ -174,56 +179,176 @@
     };
 
     stateDropdown.addEventListener("change", function () {
-
-        // Clear old cities
         cityDropdown.innerHTML = '<option value="">Select City</option>';
 
         const selectedState = this.value;
 
         if (selectedState && cities[selectedState]) {
-
             cities[selectedState].forEach(function (city) {
-
                 const option = document.createElement("option");
                 option.value = city;
                 option.textContent = city;
-
                 cityDropdown.appendChild(option);
             });
-
         }
-
     });
 </script>
 
 <script>
 const form = document.getElementById("signupForm");
 
-form.addEventListener("submit", async function (e) {
+function showError(inputEl, errorEl, message) {
+    if (inputEl) {
+        inputEl.classList.remove("is-valid");
+        inputEl.classList.add("is-invalid");
+    }
+    errorEl.textContent = message;
+    errorEl.classList.add("show");
+}
 
+function showSuccess(inputEl, errorEl) {
+    if (inputEl) {
+        inputEl.classList.remove("is-invalid");
+        inputEl.classList.add("is-valid");
+    }
+    errorEl.textContent = "";
+    errorEl.classList.remove("show");
+}
+
+function clearStatus(inputEl, errorEl) {
+    if (inputEl) {
+        inputEl.classList.remove("is-invalid", "is-valid");
+    }
+    errorEl.textContent = "";
+    errorEl.classList.remove("show");
+}
+
+function validateForm() {
+    let isValid = true;
+
+    const nameInput = document.getElementById("Name");
+    const nameError = document.getElementById("NameError");
+    const name = nameInput.value.trim();
+    if (!name) {
+        showError(nameInput, nameError, "Please enter your name.");
+        isValid = false;
+    } else if (name.length < 3 || name.length > 25) {
+        showError(nameInput, nameError, "Name must be between 3 and 25 characters.");
+        isValid = false;
+    } else {
+        showSuccess(nameInput, nameError);
+    }
+
+    const genderGroup = document.getElementById("GenderGroup");
+    const genderError = document.getElementById("GenderError");
+    const gender = document.querySelector("[name='Gender']:checked");
+    if (!gender) {
+        genderGroup.classList.add("is-invalid");
+        genderGroup.classList.remove("is-valid");
+        showError(null, genderError, "Please select gender.");
+        isValid = false;
+    } else {
+        genderGroup.classList.remove("is-invalid");
+        genderGroup.classList.add("is-valid");
+        showSuccess(null, genderError);
+    }
+
+    const dobInput = document.getElementById("DateOfBirth");
+    const dobError = document.getElementById("DateOfBirthError");
+    if (!dobInput.value) {
+        showError(dobInput, dobError, "Please select date of birth.");
+        isValid = false;
+    } else {
+        showSuccess(dobInput, dobError);
+    }
+
+    const emailInput = document.getElementById("Email");
+    const emailError = document.getElementById("EmailError");
+    const email = emailInput.value.trim();
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showError(emailInput, emailError, "Enter a valid email address.");
+        isValid = false;
+    } else if (email) {
+        showSuccess(emailInput, emailError);
+    } else {
+        clearStatus(emailInput, emailError);
+    }
+
+    const mobileInput = document.getElementById("Mobile");
+    const phoneInput = document.getElementById("Phone");
+    const contactError = document.getElementById("ContactError");
+    const mobile = mobileInput.value.trim();
+    const phone = phoneInput.value.trim();
+    if (!mobile && !phone) {
+        showError(mobileInput, contactError, "Please enter either Mobile or Phone number.");
+        phoneInput.classList.remove("is-valid");
+        phoneInput.classList.add("is-invalid");
+        isValid = false;
+    } else {
+        showSuccess(mobileInput, contactError);
+        showSuccess(phoneInput, contactError);
+    }
+
+    const stateInput = document.getElementById("state");
+    const stateError = document.getElementById("StateError");
+    if (!stateInput.value) {
+        showError(stateInput, stateError, "Please select state.");
+        isValid = false;
+    } else {
+        showSuccess(stateInput, stateError);
+    }
+
+    const agreeInput = document.getElementById("agreeTerms");
+    const agreeError = document.getElementById("AgreeTermsError");
+    if (!agreeInput.checked) {
+        showError(agreeInput, agreeError, "Please agree to the Terms & Conditions.");
+        isValid = false;
+    } else {
+        showSuccess(agreeInput, agreeError);
+    }
+
+    return isValid;
+}
+
+["Name", "DateOfBirth", "Email", "Mobile", "Phone", "state", "agreeTerms"].forEach(function (id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const eventName = el.type === "checkbox" || el.tagName === "SELECT" ? "change" : "input";
+    el.addEventListener(eventName, function () {
+        if (form.dataset.submitted === "true") {
+            validateForm();
+        }
+    });
+});
+
+document.querySelectorAll("[name='Gender']").forEach(function (el) {
+    el.addEventListener("change", function () {
+        if (form.dataset.submitted === "true") {
+            validateForm();
+        }
+    });
+});
+
+form.addEventListener("submit", async function (e) {
     e.preventDefault();
+    form.dataset.submitted = "true";
+
+    if (!validateForm()) {
+        return;
+    }
 
     const mobile = document.getElementById("Mobile").value.trim();
     const phone = document.getElementById("Phone").value.trim();
-    const error = document.getElementById("contactError");
-
-    if (mobile === "" && phone === "") {
-        error.textContent = "Please enter either Mobile or Phone number.";
-        return; // <-- API call yahin stop
-    }
-
-    error.textContent = "";
-
-    const email = document.querySelector("[name='Email']").value.trim();
-    const city = document.querySelector("[name='City']").value;
+    const email = document.getElementById("Email").value.trim();
+    const city = document.getElementById("city").value;
     const hobbies = document.querySelector("[name='Hobbies']:checked")?.value;
 
     const data = {
-        name: document.querySelector("[name='Name']").value.trim(),
+        name: document.getElementById("Name").value.trim(),
         gender: document.querySelector("[name='Gender']:checked")?.value,
-        dateOfBirth: document.querySelector("[name='DateOfBirth']").value,
+        dateOfBirth: document.getElementById("DateOfBirth").value,
         mobile: mobile,
-        state: document.querySelector("[name='State']").value,
+        state: document.getElementById("state").value,
         ...(email && { email }),
         ...(phone && { phone }),
         ...(city && { city }),
@@ -231,7 +356,6 @@ form.addEventListener("submit", async function (e) {
     };
 
     try {
-
         const response = await fetch("/api/User", {
             method: "POST",
             headers: {
@@ -244,7 +368,15 @@ form.addEventListener("submit", async function (e) {
             const toast = new bootstrap.Toast(document.getElementById("successToast"));
             toast.show();
             form.reset();
+            form.dataset.submitted = "false";
             cityDropdown.innerHTML = '<option value="">Select City</option>';
+            form.querySelectorAll(".is-invalid, .is-valid").forEach(function (el) {
+                el.classList.remove("is-invalid", "is-valid");
+            });
+            form.querySelectorAll(".field-error").forEach(function (el) {
+                el.textContent = "";
+                el.classList.remove("show");
+            });
         } else {
             const err = await response.json().catch(() => null);
             let msg = err?.message || "Signup failed. Please check your details.";
@@ -256,12 +388,10 @@ form.addEventListener("submit", async function (e) {
             }
             alert(msg);
         }
-
     } catch (err) {
         console.log(err);
         alert("Server Error");
     }
-
 });
 </script>
 
