@@ -265,7 +265,7 @@ function validateForm() {
     const emailInput = document.getElementById("Email");
     const emailError = document.getElementById("EmailError");
     const email = emailInput.value.trim();
-    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (email && !/^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/.test(email)) {
         showError(emailInput, emailError, "Enter a valid email address.");
         isValid = false;
     } else if (email) {
