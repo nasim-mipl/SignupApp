@@ -337,31 +337,14 @@ form.addEventListener("submit", async function (e) {
         return;
     }
 
-    const mobile = document.getElementById("Mobile").value.trim();
-    const phone = document.getElementById("Phone").value.trim();
-    const email = document.getElementById("Email").value.trim();
-    const city = document.getElementById("city").value;
-    const hobbies = document.querySelector("[name='Hobbies']:checked")?.value;
-
-    const data = {
-        name: document.getElementById("Name").value.trim(),
-        gender: document.querySelector("[name='Gender']:checked")?.value,
-        dateOfBirth: document.getElementById("DateOfBirth").value,
-        mobile: mobile,
-        state: document.getElementById("state").value,
-        ...(email && { email }),
-        ...(phone && { phone }),
-        ...(city && { city }),
-        ...(hobbies && { hobbies })
-    };
+    const formData = new FormData(form);
+    // FormData includes the selected photo and checked Terms & Conditions field.
+    // Let the browser set the multipart boundary automatically.
 
     try {
         const response = await fetch("/api/User", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
+            body: formData
         });
 
         if (response.ok) {
