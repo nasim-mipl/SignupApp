@@ -20,7 +20,7 @@ namespace SignupApp.Migrations
                 .HasAnnotation("ProductVersion", "8.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-            modelBuilder.Entity("SignupApp.Models.SignupModel", b =>
+            modelBuilder.Entity("SignupModel", b =>
             {
                 b.Property<int>("Id").ValueGeneratedOnAdd().HasColumnType("integer");
                 NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
